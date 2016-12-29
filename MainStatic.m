@@ -8,6 +8,20 @@ format short g
 
 %Total phase time = 60 seconds .
 
+%Diffrent options to the traffic light programs
+program1=[20,20,20];
+program2=[50,5,5];
+program3=[5,50,5];
+program4=[5,5,50];
+program5=[40,10,10];
+program6=[10,40,10];
+program7=[10,10,40];
+program8=[30,15,15];
+program9=[15,30,15];
+program10=[15,15,30];
+
+allPrograms=[program1;program2;program3;program4;program5;program6;program7;program8;program9;program10];
+
 
 
 time_simulation=210;
