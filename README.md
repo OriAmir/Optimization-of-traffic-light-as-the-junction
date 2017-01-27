@@ -18,11 +18,6 @@ Please view the wiki-pages for more information</li>
 
 Presentor: Ori Amir
 
-![alt tag](https://avatars1.githubusercontent.com/u/17565646?v=3&u=277a1837598bb24dcc8bc21e020e78364aa355ac&s=400)
+[![Ori](https://avatars2.githubusercontent.com/u/17565646?v=3&s=120)](https://github.com/OriAmir)
 
 Academic advisor: Dr. Guy Leshem
-
-
-
-
-
