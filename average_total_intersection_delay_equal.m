@@ -7,6 +7,7 @@
 function [average_delay,average_vehicle_delay,average_ped_delay,total_num_vehicle,total_num_discharge,total_delay_1_L_T_R,total_delay_3,total_delay_5,total_delay_7,num_vehicle_1_L_T_R_arrival,num_vehicle_3_arrival,num_vehicle_5_arrival,num_vehicle_7_arrival,num_vehicle_1_L_T_R_discharge,num_vehicle_3_discharge,num_vehicle_5_discharge,num_vehicle_7_discharge,arrival_vehicle_every_second_3,avg_cycle_1_L_T_R,avg_cycle_3,avg_cycle_5,avg_cycle_7] = ...
  average_total_intersection_delay_equal(time_simulation,x,lamda1L,lamda1T,lamda1R,lamda5,lamda3,lamda7)
 
+
 % Data of pedestrian crossing 
 % The data say 0.1 of pededstrian for second .
 

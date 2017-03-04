@@ -3,6 +3,8 @@
 
 function [ lamda1L,lamda1R,lamda1T,lamda3,lamda5,lamda7 ] = setLamdaValues( num_cycles,lamda_Values)
 
+
+disp('hi!');
 lamda1L=(lamda_Values(1)/3600)*num_cycles;
 lamda1R=(lamda_Values(2)/3600)*num_cycles;
 lamda1T=(lamda_Values(3)/3600)*num_cycles;
