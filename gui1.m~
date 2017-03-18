@@ -22,7 +22,7 @@ function varargout = gui1(varargin)
 
 % Edit the above text to modify the response to help gui1
 
-% Last Modified by GUIDE v2.5 04-Mar-2017 15:59:49
+% Last Modified by GUIDE v2.5 08-Mar-2017 20:16:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -68,6 +68,11 @@ imshow(matlabImage)
 
  axis on
 
+ 
+  axes(handles.axes2)
+         axis off
+
+           axes(handles.axes1)
 
 % --- Outputs from this function are returned to the command line.
 function varargout = gui1_OutputFcn(hObject, eventdata, handles) 
@@ -80,9 +85,9 @@ function varargout = gui1_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --- Executes on button press in button_start_dinamic_sim.
-function button_start_dinamic_sim_Callback(hObject, eventdata, handles)
-% hObject    handle to button_start_dinamic_sim (see GCBO)
+% --- Executes on button press in button_start_static_sim.
+function button_start_static_sim_Callback(hObject, eventdata, handles)
+% hObject    handle to button_start_static_sim (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -92,44 +97,8 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
   
-% textLabel = sprintf('Variable C = %f', 'cccc');
-%   for i=1:5
-%       set(handles.text_arrival_7, 'String', i);
-% 
-%        recArrival=rectangle('Position', [700, 300, 150, 5 ]);
-%  recArrival.EdgeColor='r';
-%   recArrival.FaceColor='r';
-%   recArrival.LineWidth=4;
-%       
-%     pause(1);
-%   delete(recArrival);
-%       pause(1);
-% 
-% 
-%   end
-%   
-% fprintf('HEY');
-% 
-% return;
-%     x = get(handles.editText,'String'); %edit1 being Tag of ur edit box
-%  if isempty(x)
-%    fprintf('Error: Enter Text first\n');
-%  end
 
-
-% handles.rec=myRece;
-% guidata(hObject,handles)
-
-% recPass=rectangle('Position', [700, 320, 200, 5],...
-% 	'EdgeColor','g', 'LineWidth', 1); 
-%  recPass.EdgeColor='g';
-%   recPass.LineWidth=5;
-%     recPass.LineStyle=':';
-% 
-% 
-% return;
-
-%Diffrent options to the traffic light programs
+%DDiffrent options to the traffic light programs
 program1=[20,20,20];
 program2=[50,5,5];
 program3=[5,50,5];
@@ -142,8 +111,6 @@ program9=[15,30,15];
 program10=[15,15,30];
 
 allPrograms=[program1;program2;program3;program4;program5;program6;program7;program8;program9;program10];
-
-
 
 time_simulation=210;
 
@@ -196,94 +163,152 @@ if isempty(p)
     parpool('local',10); %Create 10 works to run in parallel
 end
 
-newProgram=[20,20,20]; % Program for traffic lights
+newProgram=[20,20,20]; % Default Program for traffic lights
 
-  recArrival=rectangle('Position', [700, 300, 0, 0 ]);
-recPass=rectangle('Position', [700, 320, 0, 0]);
- recPassDefault=rectangle('Position', [700, 340, 0, 0]);
+rec_Arrival_7=rectangle('Position', [700, 300, 0, 0 ]);
+rec_discharged_7=rectangle('Position', [700, 320, 0, 0]);
+rec_discharged_old_7=rectangle('Position', [700, 340, 0, 0]);
+
+rec_Arrival_3=rectangle('Position', [270, 450, 0, 0]);
+rec_discharged_3=rectangle('Position', [270, 470, 0, 0]);
+rec_discharged_old_3=rectangle('Position', [270, 470, 0, 0]);
 
 
+rec_Arrival_1=rectangle('Position', [0, 0, 0, 0 ]);
+rec_discharged_1=rectangle('Position', [0, 0, 0, 0]);
+rec_discharged_old_1=rectangle('Position', [0, 0, 0, 0]);
 
-for i=1 : 8
-    program = sprintf('Program choose for round %.0f is: \n Lanes 3,7 - %.0f Seconds \n Lane   1  - %.0f Seconds \n Lane   5  - %.0f Seconds \n \n',i,newProgram(1),newProgram(2),newProgram(3));
-  set(handles.text_details, 'String',program);
+rec_Arrival_5=rectangle('Position', [0, 0, 0, 0 ]);
+rec_discharged_5=rectangle('Position', [0, 0, 0, 0]);
+rec_discharged_old_5=rectangle('Position', [0, 0, 0, 0]);
 
+rec_Arrival_3
+lastProgram=newProgram; % Save the last program for check if there is change in any round
+for i=1 : 2
     
-       % line([400 500], [500 50]);
-        pause(3);
-                delete(recArrival);
-                delete(recPass);
-                 delete(recPassDefault);
+    roundString = sprintf('Round %.0f ',i);
+    set(handles.text_round_num, 'String',roundString);
 
     fprintf('Program choose for round %.0f is: \n Lanes 3,7 - %.0f Seconds \n Lane   1  - %.0f Seconds \n Lane   5  - %.0f Seconds \n \n',i,newProgram(1),newProgram(2),newProgram(3));
-   % fprintf('Program choose for round %.0f is: \n Lanes 3,7 - %.0f Seconds \n Lane   1  - %.0f Seconds \n Lane   5  - %.0f Seconds \n \n',i,newProgram(1),newProgram(2),newProgram(3));
 
+    program = sprintf('Lanes 3,7 - %.0f Seconds \n\nLane 1  - %.0f Seconds \n\nLane 5 - %.0f Seconds',newProgram(1),newProgram(2),newProgram(3));
+    set(handles.text_program, 'String',program);
+     
+    
+      
+  
+   delete(rec_Arrival_7);
+   delete(rec_discharged_7);
+   delete(rec_discharged_old_7);
+
+   delete(rec_Arrival_1);
+   delete(rec_discharged_1);
+   delete(rec_discharged_old_1);
+
+   
+     delete(rec_Arrival_3);
+   delete(rec_discharged_3);
+      delete(rec_discharged_old_3);
+
+   
+   
 %     %initalize num of vehicles in the junction every 3.5 minutes 
-    [lamda1L,lamda1R,lamda1T,lamda3,lamda5,lamda7]=...
-       setLamdaValues(num_of_cycles_for_hour,num_vehicle_arrival_every_round(i,:));  
+   [lamda1L,lamda1R,lamda1T,lamda3,lamda5,lamda7]=...
+    setLamdaValues(num_of_cycles_for_hour,num_vehicle_arrival_every_round(i,:));  
     % Run the simulation with 'newProgram'
+  [average_delay,average_vehicle_delay,average_ped_delay,total_num_vehicle,total_num_discharge,total_delay_1_L_T_R,total_delay_3,total_delay_5,total_delay_7,num_vehicle_1_L_T_R_arrival,num_vehicle_3_arrival,num_vehicle_5_arrival,num_vehicle_7_arrival,num_vehicle_1_L_T_R_discharge,num_vehicle_3_discharge,num_vehicle_5_discharge,num_vehicle_7_discharge,arrival_vehicle_every_second_3,avg_cycle_1_L_T_R,avg_cycle_3,avg_cycle_5,avg_cycle_7] ...
+   =average_total_intersection_delay_equal(time_simulation,newProgram,lamda1L,lamda1T,lamda1R,lamda5,lamda3,lamda7);
+%  
+%     [rec_Arrival_3]=drawRec(handles.axes1,280,450,num_vehicle_3_arrival,'r','w');
+%     [rec_discharged_3]=drawRec(handles.axes1,280,470,num_vehicle_3_discharge,'g','w');
+%     
+    [rec_Arrival_7]=drawRec(handles.axes1,700,300,num_vehicle_7_arrival,'r','w');
+    [rec_discharged_7]=drawRec(handles.axes1,700,320,num_vehicle_7_discharge,'g','w');
+
+    
+      [rec_Arrival_1]=drawRec(handles.axes1,500,600,num_vehicle_1_L_T_R_arrival,'r','h');
+      [rec_discharged_1]=drawRec(handles.axes1,520,600,num_vehicle_1_L_T_R_discharge,'g','h');
+
+     [rec_Arrival_3]=drawRec(handles.axes1,270-num_vehicle_3_arrival*2,500,num_vehicle_3_arrival,'r','w');    
+    [rec_discharged_3]=drawRec(handles.axes1,270-num_vehicle_3_discharge*2,480,num_vehicle_3_discharge,'g','w');
+      
+      [rec_Arrival_5]=drawRec(handles.axes1,420,600,num_vehicle_1_L_T_R_arrival,'r','h');
+      [rec_discharged_5]=drawRec(handles.axes1,440,600,num_vehicle_1_L_T_R_discharge,'g','h');
+
+      
+
+    arrival_string_7 = sprintf('Arrival: %d', round(num_vehicle_7_arrival));
+    discharge_string_7 = sprintf('Discharge: %d', round(num_vehicle_7_discharge));
+
+    set(handles.text_arrival_7, 'String',arrival_string_7);
+    set(handles.text_discharge_7, 'String',discharge_string_7);
+
+    %Check also for old the deafult program
+     newProgram=[20,20,20];
     [average_delay,average_vehicle_delay,average_ped_delay,total_num_vehicle,total_num_discharge,total_delay_1_L_T_R,total_delay_3,total_delay_5,total_delay_7,num_vehicle_1_L_T_R_arrival,num_vehicle_3_arrival,num_vehicle_5_arrival,num_vehicle_7_arrival,num_vehicle_1_L_T_R_discharge,num_vehicle_3_discharge,num_vehicle_5_discharge,num_vehicle_7_discharge,arrival_vehicle_every_second_3,avg_cycle_1_L_T_R,avg_cycle_3,avg_cycle_5,avg_cycle_7] ...
      =average_total_intersection_delay_equal(time_simulation,newProgram,lamda1L,lamda1T,lamda1R,lamda5,lamda3,lamda7);
  
-  recArrival=rectangle('Position', [700, 300, num_vehicle_7_arrival*2, 5 ]);
- recArrival.EdgeColor='r';
-  recArrival.FaceColor='r';
-  recArrival.LineWidth=4;
+     discharge_old_7 = sprintf('Old Discharge: %d', round(num_vehicle_7_discharge));
+     set(handles.text_disharge_old_7, 'String',discharge_old_7);
 
-   %  'EdgeColor','r','FaceColor','r', 'LineWidth', 3);
-
-recPass=rectangle('Position', [700, 320, num_vehicle_7_discharge*2, 5],...
-	'EdgeColor','g', 'LineWidth', 1); 
- recPass.EdgeColor='g';
-  recPass.FaceColor='g';
-  recPass.LineWidth=5;
-
-    arrival_7 = sprintf('Arrival: %d', round(num_vehicle_7_arrival));
-  set(handles.text_arrival_7, 'String',arrival_7);
-  
-      discharge_7 = sprintf('Discharge: %d', round(num_vehicle_7_discharge));
-
-    set(handles.text_discharge_7, 'String',discharge_7);
-
- 
     
-    newProgram=[20,20,20];
-     [average_delay,average_vehicle_delay,average_ped_delay,total_num_vehicle,total_num_discharge,total_delay_1_L_T_R,total_delay_3,total_delay_5,total_delay_7,num_vehicle_1_L_T_R_arrival,num_vehicle_3_arrival,num_vehicle_5_arrival,num_vehicle_7_arrival,num_vehicle_1_L_T_R_discharge,num_vehicle_3_discharge,num_vehicle_5_discharge,num_vehicle_7_discharge,arrival_vehicle_every_second_3,avg_cycle_1_L_T_R,avg_cycle_3,avg_cycle_5,avg_cycle_7] ...
-     =average_total_intersection_delay_equal(time_simulation,newProgram,lamda1L,lamda1T,lamda1R,lamda5,lamda3,lamda7);
- recPassDefault=rectangle('Position', [700, 340, num_vehicle_7_discharge*2, 5],...
-	'EdgeColor','w', 'LineWidth', 3); 
+    [rec_discharged_old_7]=drawRec(handles.axes1,700,340,num_vehicle_7_discharge,'b','w');
+    
+      [rec_discharged_old_1]=drawRec(handles.axes1,540,600,num_vehicle_1_L_T_R_discharge,'b','h');
       
+      
+      [rec_discharged_old_3]=drawRec(handles.axes1,270-num_vehicle_3_discharge*2,460,num_vehicle_3_discharge,'b','w');
 
- recPassDefault.EdgeColor='w';
-  recPassDefault.FaceColor='w';
-  recPassDefault.LineWidth=5;
     
- 
-     fprintf('in round %.0f is: \n  to lane 7 arrivel - %.0f , dishcarge - %.0f  \n',i,num_vehicle_7_arrival,num_vehicle_7_discharge);
-
-
-
-%      t_avg_delay=t_avg_delay+average_delay;
-%      t_arrival=t_arrival+total_num_vehicle;
-%      t_dis=t_dis+total_num_discharge;
-%      
-%      %run in parllar all the programs on the current sitatuion on junction
+    
+     pause(3);
+     t_avg_delay=t_avg_delay+average_delay;
+     t_arrival=t_arrival+total_num_vehicle;
+     t_dis=t_dis+total_num_discharge;
+     
+     %run in parllar all the programs on the current sitatuion on junction
      parfor j = 1 : 10
           [all_delays(j),average_vehicle_delay,average_ped_delay,total_num_vehicle,total_num_discharge,total_delay_1_L_T_R,total_delay_3,total_delay_5,total_delay_7,num_vehicle_1_L_T_R_arrival,num_vehicle_3_arrival,num_vehicle_5_arrival,num_vehicle_7_arrival,num_vehicle_1_L_T_R_discharge,num_vehicle_3_discharge,num_vehicle_5_discharge,num_vehicle_7_discharge,arrival_vehicle_every_second_3,avg_cycle_1_L_T_R,avg_cycle_3,avg_cycle_5,avg_cycle_7] ...
            =average_total_intersection_delay_equal(time_simulation,allPrograms(j,:),lamda1L,lamda1T,lamda1R,lamda5,lamda3,lamda7);
      end
-%            
+     
       %Take the program that give the min avg delay in junction   
      [minVal,minIndex]=min(all_delays);
-      newProgram=allPrograms(minIndex,:);
-%            
+     newProgram=allPrograms(minIndex,:);
+     
+     
+     %Check if the program is changed from last time
+     if(isequal(newProgram,lastProgram)~=1 && i+1<round(num_of_cycles_for_hour))
+          %Draw in axes 2 yellow rectangle to mark that there is a changed
+          %between the programs
+        program = sprintf('Lanes 3,7 - %.0f Seconds \n\nLane 1  - %.0f Seconds \n\nLane 5 - %.0f Seconds',newProgram(1),newProgram(2),newProgram(3));
+        set(handles.text_program, 'String',program);
+        for j=1:6
+           recProgramChanged=rectangle(handles.axes2,'Position', [0, 0, 2, 2],'EdgeColor','y', 'LineWidth', 3);
+           pause(0.5);
+           delete(recProgramChanged);
+           pause(0.5);
+        end
+     end
+     
+     lastProgram=newProgram;
+    
 end
 
 
+function [rec]= drawRec(axes,xPos,yPos,num_vehicle,color,flag)
+    if(flag=='h')
+            cur_rec=rectangle(axes,'Position', [xPos, yPos, 5,num_vehicle*2 ]);
+    else
+       cur_rec=rectangle(axes,'Position', [xPos, yPos, num_vehicle*2, 5 ]);
+    end
+    cur_rec.EdgeColor=color;
+    cur_rec.FaceColor=color;
+    cur_rec.LineWidth=4;
+    rec=cur_rec;
 
 % UIWAIT makes gui wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
-
 
 
 % --- Outputs from this function are returned to the command line.
@@ -299,3 +324,10 @@ varargout{1} = handles.output;
 
 % --- Executes on button press in start_button.
 function start_button_Callback(hObject, eventdata, handles)
+
+
+% --- Executes on button press in button_start_dinamic_sim.
+function button_start_dinamic_sim_Callback(hObject, eventdata, handles)
+% hObject    handle to button_start_dinamic_sim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
