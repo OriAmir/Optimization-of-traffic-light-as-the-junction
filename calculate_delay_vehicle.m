@@ -3,7 +3,7 @@
 %in every second in any way of junction , and return vectors of the time
 %that the cars is arrivval and delay 
 
-function [avg_cycle_delay_1,avg_cycle_delay_3,avg_cycle_delay_5,arrival_time_veh_1L,arrival_time_veh_1T,arrival_time_veh_1R,arrival_time_veh_5,arrival_time_veh_3,arrival_time_veh_7,delay_veh_1L,delay_veh_1T,delay_veh_1R,delay_veh_5,delay_veh_3,delay_veh_7,average_delay_veh_1L,average_delay_veh_1T,average_delay_veh_1R,average_delay_veh_5,average_delay_veh_3,average_delay_veh_7]=...
+function [arrival_time_veh_1L,arrival_time_veh_1T,arrival_time_veh_1R,arrival_time_veh_5,arrival_time_veh_3,arrival_time_veh_7,delay_veh_1L,delay_veh_1T,delay_veh_1R,delay_veh_5,delay_veh_3,delay_veh_7,average_delay_veh_1L,average_delay_veh_1T,average_delay_veh_1R,average_delay_veh_5,average_delay_veh_3,average_delay_veh_7]=...
     calculate_delay_vehicle(time_simulation,arrival_vehicle_every_second_1L,arrival_vehicle_every_second_1T,arrival_vehicle_every_second_1R,arrival_vehicle_every_second_5,arrival_vehicle_every_second_3,arrival_vehicle_every_second_7,discharge_veh_1L,discharge_veh_1T,discharge_veh_1R,discharge_veh_5,discharge_veh_3,discharge_veh_7,num_veh_1L_discharged,num_veh_1T_discharged,num_veh_1R_discharged,num_veh_5_discharged,num_veh_3_discharged,num_veh_7_discharged )
 
 %Flags for say if the num of vehicles that discharged is 0
@@ -314,7 +314,6 @@ end
 
 if(flag1L==true)
     delay_veh_1L=0;
-    cycle_delay_1L=0;
 else
     for i = 1 : length(arrival_time_veh_1L)
         if i<= num_veh_1L_discharged
@@ -322,18 +321,13 @@ else
         else
             delay_veh_1L(i)= time_simulation - arrival_time_veh_1L(i);
 
-        end
-        
-          cycle_delay_1L(i)=delay_veh_1L(i)/time_simulation;
-
-        
+        end 
     end
 end
 
 
 if(flag1T==true)
     delay_veh_1T=0;
-    cycle_delay_1T=0;
 else
     for i = 1 : length(arrival_time_veh_1T)
 
@@ -342,9 +336,6 @@ else
         else 
                 delay_veh_1T(i)= time_simulation - arrival_time_veh_1T(i);
         end
-        
-                        cycle_delay_1T(i)=delay_veh_1T(i)/time_simulation;
-
 
     end
 end
@@ -353,32 +344,21 @@ end
 
 if(flag1R==true)
     delay_veh_1R=0;
-    cycle_delay_1R=0;
 else
     for i = 1 : length(arrival_time_veh_1R)
 
         if i<= num_veh_1R_discharged
             delay_veh_1R(i) = discharge_time_veh_1R(i)- arrival_time_veh_1R(i);
          else 
-
-                delay_veh_1R(i)= time_simulation - arrival_time_veh_1R(i);
+            delay_veh_1R(i)= time_simulation - arrival_time_veh_1R(i);
         end
-                cycle_delay_1R(i)=delay_veh_1R(i)/time_simulation;
-
-       
-
     end
 end
 
-av_temp_1R=mean(cycle_delay_1R);
-av_temp_1T=mean(cycle_delay_1T);
-av_temp_1L=mean(cycle_delay_1L);
 
-avg_cycle_delay_1=mean([av_temp_1R,av_temp_1T,av_temp_1L]);
 
 if(flag5==true)
     delay_veh_5=0;
-    cycle_delay_5=0;
 else
     for i = 1 : length(arrival_time_veh_5)
 
@@ -387,28 +367,23 @@ else
          else 
                 delay_veh_5(i)= time_simulation - arrival_time_veh_5(i);
         end
-        cycle_delay_5(i)=delay_veh_5(i)/time_simulation;
     end
 end
 
-        avg_cycle_delay_5=mean(cycle_delay_5);
 
 if(flag3==true)
     delay_veh_3=0;
     cycle_delay_3=0;
 else
     for i = 1 : length(arrival_time_veh_3)
-
         if i<= num_veh_3_discharged
             delay_veh_3(i) = discharge_time_veh_3(i)- arrival_time_veh_3(i);
          else 
             delay_veh_3(i)= time_simulation - arrival_time_veh_3(i);
         end
-        cycle_delay_3(i)=delay_veh_3(i)/time_simulation;
     end
 end
 
-        avg_cycle_delay_3=mean(cycle_delay_3);
 
 if(flag7==true)
     delay_veh_7=0;
@@ -418,51 +393,15 @@ else
         if i<= num_veh_7_discharged
             delay_veh_7(i) = discharge_time_veh_7(i)- arrival_time_veh_7(i);
         else 
-                delay_veh_7(i)= time_simulation - arrival_time_veh_7(i);
+            delay_veh_7(i)= time_simulation - arrival_time_veh_7(i);
         end
 
    end
 end
 
 
-% 
-% r=sum(arrival_vehicle_every_second_3);
-% result = sum(arrival_vehicle_every_second_3(1:70));
-% result1 = sum(arrival_vehicle_every_second_3(70:140));
-% result2 = sum(arrival_vehicle_every_second_3(140:210));
-% 
-% result_5 = sum(arrival_vehicle_every_second_5(1:70));
-% result_5_2 = sum(arrival_vehicle_every_second_5(70:140));
-% result_5_3 = sum(arrival_vehicle_every_second_5(70:140));
-% 
-% average_delay_veh_112121212 = mean([result_5,result_5_2,result_5_3]);
 
 % calculate the avrage delay by function mean 
-
-test=sum(arrival_vehicle_every_second_3(1:70));
-test1=sum(arrival_vehicle_every_second_3(70:140));
-test2=sum(arrival_vehicle_every_second_3(140:210));
-
-        test_mean=mean([test,test1,test2]);
-
-        test=sum(discharge_veh_7(1:70));
-test1=sum(discharge_veh_7(70:140));
-test2=sum(discharge_veh_7(140:210));
-
-        test_mean1=mean([test,test1,test2]);
-
-        
-                test=sum(discharge_veh_5(1:70));
-test1=sum(discharge_veh_5(70:140));
-test2=sum(discharge_veh_5(140:210));
-
-        test_mean2=mean([test,test1,test2]);
-        
-               test=sum(discharge_veh_1T(1:70));
-test1=sum(discharge_veh_1T(70:140));
-test2=sum(discharge_veh_1T(140:210));
-
-        test_mean3=mean([test,test1,test2]);
 
 average_delay_veh_1L = mean(delay_veh_1L);
 average_delay_veh_1T = mean(delay_veh_1T);

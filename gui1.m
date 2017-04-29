@@ -22,7 +22,7 @@ function varargout = gui1(varargin)
 
 % Edit the above text to modify the response to help gui1
 
-% Last Modified by GUIDE v2.5 25-Mar-2017 13:09:45
+% Last Modified by GUIDE v2.5 27-Apr-2017 20:32:00
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -85,9 +85,9 @@ function varargout = gui1_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --- Executes on button press in button_start_static_sim.
-function button_start_static_sim_Callback(hObject, eventdata, handles)
-% hObject    handle to button_start_static_sim (see GCBO)
+% --- Executes on button press in button_start_sim.
+function button_start_sim_Callback(hObject, eventdata, handles)
+% hObject    handle to button_start_sim (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -97,9 +97,14 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
+
+u = get(get(handles.button_group_select_plan,'SelectedObject'), 'Tag');
+
+u = get(get(handles.button_group_select_sim,'SelectedObject'), 'Tag');
+
+
 %Set the buttons of simulation disabled until the simulation end 
-set(handles.button_start_static_sim,'enable','off');
-set(handles.button_start_dinamic_sim,'enable','off');
+set(handles.button_start_sim,'enable','off');
 
 %DDiffrent options to the traffic light programs
 program1=[20,20,20];
@@ -150,11 +155,41 @@ round17=[30,40,30,15,10,10];
 num_vehicle_arrival_every_round=[round1;round2;round3;round4;round5;round6;round7;round8;round9;round10;round11;round12;round13;round14;round15;round16;round17];
 
 
-num_of_cycles_for_hour=17.4; % 3600/210 = 17.4 --> cycles per hour 
+num_of_cycles_for_hour=17;%17.4; % 3600/210 = 17.4 --> cycles per hour 
 
-t_avg_delay=0; %contain total delay
-t_arrival=0;  %contain total arrivals vechiles
-t_dis=0; %contain total discharged vechiles
+total_vechiles_arrival_all=0;  %contain total new arrivals vechiles
+total_vechiles_arrival_1=0;  %contain total new arrivals vechiles
+total_vechiles_arrival_3=0;  %contain total new arrivals vechiles
+total_vechiles_arrival_5=0;  %contain total new arrivals vechiles
+total_vechiles_arrival_7=0;  %contain total new arrivals vechiles
+
+total_new_avg_delay_all=0; %contain total new delay
+total_new_avg_delay_1=0; %contain total new delay
+total_new_avg_delay_3=0; %contain total new delay
+total_new_avg_delay_5=0; %contain total new delay
+total_new_avg_delay_7=0; %contain total new delay
+
+
+total_new_dis_all=0; %contain total new discharged vechiles
+total_new_dis_1=0; %contain total new discharged vechiles
+total_new_dis_3=0; %contain total new discharged vechiles
+total_new_dis_5=0; %contain total new discharged vechiles
+total_new_dis_7=0; %contain total new discharged vechiles
+
+total_old_avg_delay_all=0; %contain total old delay
+total_old_avg_delay_1=0; %contain total old delay
+total_old_avg_delay_3=0; %contain total old delay
+total_old_avg_delay_5=0; %contain total old delay
+total_old_avg_delay_7=0; %contain total old delay
+
+
+
+total_old_dis_all=0; %contain total old discharged vechiles
+total_old_dis_1=0; %contain total old discharged vechiles
+total_old_dis_3=0; %contain total old discharged vechiles
+total_old_dis_5=0; %contain total old discharged vechiles
+total_old_dis_7=0; %contain total old discharged vechiles
+
 
 %delete(gcp('nocreate'))
 
@@ -191,7 +226,7 @@ rec_discharged_old_7=rectangle('Position', [0, 0, 0, 0 ]);
 lastProgram=newProgram; % Save the last program for check if there is change in any round
 
 
-for i=1 : 2
+for i=1 : 17
     
     %Set num of current round in the GUI text
     roundString = sprintf('Round %.0f ',i);
@@ -221,10 +256,12 @@ for i=1 : 2
    %num_vehicle_arrival_every_round array
    
    [lamda1L,lamda1R,lamda1T,lamda3,lamda5,lamda7]=...
-    setLamdaValues(num_of_cycles_for_hour,num_vehicle_arrival_every_round(i,:)); 
+   setLamdaValues(17.4,num_vehicle_arrival_every_round(i,:)); 
+
+    %setLamdaValues(num_of_cycles_for_hour,num_vehicle_arrival_every_round(i,:)); 
 
     % Run the simulation with 'newProgram'
-   [average_delay,average_vehicle_delay,average_ped_delay,total_num_vehicle,total_num_discharge,total_delay_1_L_T_R,total_delay_3,total_delay_5,total_delay_7,num_vehicle_1_L_T_R_arrival,num_vehicle_3_arrival,num_vehicle_5_arrival,num_vehicle_7_arrival,num_vehicle_1_L_T_R_discharge,num_vehicle_3_discharge,num_vehicle_5_discharge,num_vehicle_7_discharge,arrival_vehicle_every_second_3,avg_cycle_1_L_T_R,avg_cycle_3,avg_cycle_5,avg_cycle_7] ...
+   [average_delay_new,average_vehicle_delay_new,average_ped_delay_new,total_num_vehicle_new,total_num_discharge_new,total_delay_1_L_T_R_new,total_delay_3_new,total_delay_5_new,total_delay_7_new,num_vehicle_1_L_T_R_arrival_new,num_vehicle_3_arrival_new,num_vehicle_5_arrival_new,num_vehicle_7_arrival_new,num_vehicle_1_L_T_R_discharge_new,num_vehicle_3_discharge_new,num_vehicle_5_discharge_new,num_vehicle_7_discharge_new,total_num_ped_discharge,num_ped_1_L_T_R_arrival,num_ped_1_L_T_R_discharge,num_ped_3_arrival,num_ped_3_discharge,num_ped_5_arrival,num_ped_5_discharge,num_ped_7_arrival,num_ped_7_discharge] ...
    =average_total_intersection_delay_equal(time_simulation,newProgram,lamda1L,lamda1T,lamda1R,lamda5,lamda3,lamda7);
 
     
@@ -235,73 +272,73 @@ for i=1 : 2
     %Blue rectangle - how many cars need to be discharged with default program
     %
     
-    [rec_Arrival_1]=drawRec(handles.axes1,570,592,num_vehicle_1_L_T_R_arrival,'r','h');
-    [rec_discharged_1]=drawRec(handles.axes1,542,592,num_vehicle_1_L_T_R_discharge,'g','h');
+    [rec_Arrival_1]=drawRec(handles.axes1,570,592,num_vehicle_1_L_T_R_arrival_new,'r','h');
+    [rec_discharged_1]=drawRec(handles.axes1,542,592,num_vehicle_1_L_T_R_discharge_new,'g','h');
 
-    [rec_Arrival_3]=drawRec(handles.axes1,269-num_vehicle_3_arrival*2,495,num_vehicle_3_arrival,'r','w');    
-    [rec_discharged_3]=drawRec(handles.axes1,269-num_vehicle_3_discharge*2,471,num_vehicle_3_discharge,'g','w');
+    [rec_Arrival_3]=drawRec(handles.axes1,269-num_vehicle_3_arrival_new*2,495,num_vehicle_3_arrival_new,'r','w');    
+    [rec_discharged_3]=drawRec(handles.axes1,269-num_vehicle_3_discharge_new*2,471,num_vehicle_3_discharge_new,'g','w');
       
-    [rec_Arrival_5]=drawRec(handles.axes1,403,219-num_vehicle_5_arrival*2,num_vehicle_5_arrival,'r','h');
-    [rec_discharged_5]=drawRec(handles.axes1,425,219-num_vehicle_5_discharge*2,num_vehicle_5_discharge,'g','h');
+    [rec_Arrival_5]=drawRec(handles.axes1,403,219-num_vehicle_5_arrival_new*2,num_vehicle_5_arrival_new,'r','h');
+    [rec_discharged_5]=drawRec(handles.axes1,425,219-num_vehicle_5_discharge_new*2,num_vehicle_5_discharge_new,'g','h');
 
-    [rec_Arrival_7]=drawRec(handles.axes1,700,300,num_vehicle_7_arrival,'r','w');
-    [rec_discharged_7]=drawRec(handles.axes1,700,323,num_vehicle_7_discharge,'g','w');
+    [rec_Arrival_7]=drawRec(handles.axes1,700,300,num_vehicle_7_arrival_new,'r','w');
+    [rec_discharged_7]=drawRec(handles.axes1,700,323,num_vehicle_7_discharge_new,'g','w');
 
       
     %Update the values of arrivael/discharged vehicles in every lange in the text fields
       
-    arrival_string_1 = sprintf('Arrival: %d', round(num_vehicle_1_L_T_R_arrival));
-    discharge_string_1 = sprintf('Discharge: %d', round(num_vehicle_1_L_T_R_discharge));
+    arrival_string_1 = sprintf('Arrival: %d', round(num_vehicle_1_L_T_R_arrival_new));
+    discharge_string_1 = sprintf('Discharge: %d', round(num_vehicle_1_L_T_R_discharge_new));
     set(handles.text_arrival_1, 'String',arrival_string_1);
     set(handles.text_discharge_1, 'String',discharge_string_1);
     
-    arrival_string_3 = sprintf('Arrival: %d', round(num_vehicle_3_arrival));
-    discharge_string_3 = sprintf('Discharge: %d', round(num_vehicle_3_discharge));
+    arrival_string_3 = sprintf('Arrival: %d', round(num_vehicle_3_arrival_new));
+    discharge_string_3 = sprintf('Discharge: %d', round(num_vehicle_3_discharge_new));
     set(handles.text_arrival_3, 'String',arrival_string_3);
     set(handles.text_discharge_3, 'String',discharge_string_3);
     
-    arrival_string_5 = sprintf('Arrival: %d', round(num_vehicle_5_arrival));
-    discharge_string_5 = sprintf('Discharge: %d', round(num_vehicle_5_discharge));
+    arrival_string_5 = sprintf('Arrival: %d', round(num_vehicle_5_arrival_new));
+    discharge_string_5 = sprintf('Discharge: %d', round(num_vehicle_5_discharge_new));
     set(handles.text_arrival_5, 'String',arrival_string_5);
     set(handles.text_discharge_5, 'String',discharge_string_5);
 
-    arrival_string_7 = sprintf('Arrival: %d', round(num_vehicle_7_arrival));
-    discharge_string_7 = sprintf('Discharge: %d', round(num_vehicle_7_discharge));
+    arrival_string_7 = sprintf('Arrival: %d', round(num_vehicle_7_arrival_new));
+    discharge_string_7 = sprintf('Discharge: %d', round(num_vehicle_7_discharge_new));
     set(handles.text_arrival_7, 'String',arrival_string_7);
     set(handles.text_discharge_7, 'String',discharge_string_7);
     
     %Run again the simulation with the default program to check the diffrent between results
      defaultProgram=[20,20,20];
-    [average_delay,average_vehicle_delay,average_ped_delay,total_num_vehicle,total_num_discharge,total_delay_1_L_T_R,total_delay_3,total_delay_5,total_delay_7,num_vehicle_1_L_T_R_arrival,num_vehicle_3_arrival,num_vehicle_5_arrival,num_vehicle_7_arrival,num_vehicle_1_L_T_R_discharge,num_vehicle_3_discharge,num_vehicle_5_discharge,num_vehicle_7_discharge,arrival_vehicle_every_second_3,avg_cycle_1_L_T_R,avg_cycle_3,avg_cycle_5,avg_cycle_7] ...
+    [average_delay_old,average_vehicle_delay_old,average_ped_delay_old,total_num_vehicle_old,total_num_discharge_old,total_delay_1_L_T_R_old,total_delay_3_old,total_delay_5_old,total_delay_7_old,num_vehicle_1_L_T_R_arrival_old,num_vehicle_3_arrival_old,num_vehicle_5_arrival_old,num_vehicle_7_arrival_old,num_vehicle_1_L_T_R_discharge_old,num_vehicle_3_discharge_old,num_vehicle_5_discharge_old,num_vehicle_7_discharge_old,total_num_ped,total_num_ped_discharge,num_ped_1_L_T_R_arrival,num_ped_1_L_T_R_discharge,num_ped_3_arrival,num_ped_3_discharge,num_ped_5_arrival,num_ped_5_discharge,num_ped_7_arrival,num_ped_7_discharge] ...
      =average_total_intersection_delay_equal(time_simulation,defaultProgram,lamda1L,lamda1T,lamda1R,lamda5,lamda3,lamda7);
  
      
      % Update how many cars need to be dischareg with deafult program and draw the rectangles
-     discharge_old_1 = sprintf('Old Discharge: %d', round(num_vehicle_1_L_T_R_discharge));
+     discharge_old_1 = sprintf('Old Discharge: %d', round(num_vehicle_1_L_T_R_discharge_old));
      set(handles.text_discharge_old_1, 'String',discharge_old_1);
-     [rec_discharged_old_1]=drawRec(handles.axes1,518,592,num_vehicle_1_L_T_R_discharge,'b','h');
+     [rec_discharged_old_1]=drawRec(handles.axes1,518,592,num_vehicle_1_L_T_R_discharge_old,'b','h');
 
-     discharge_old_3 = sprintf('Old Discharge: %d', round(num_vehicle_3_discharge));
+     discharge_old_3 = sprintf('Old Discharge: %d', round(num_vehicle_3_discharge_old));
      set(handles.text_discharge_old_3, 'String',discharge_old_3);
-     [rec_discharged_old_3]=drawRec(handles.axes1,269-num_vehicle_3_discharge*2,445,num_vehicle_3_discharge,'b','w');
+     [rec_discharged_old_3]=drawRec(handles.axes1,269-num_vehicle_3_discharge_old*2,445,num_vehicle_3_discharge_old,'b','w');
 
-     discharge_old_5 = sprintf('Old Discharge: %d', round(num_vehicle_5_discharge));
+     discharge_old_5 = sprintf('Old Discharge: %d', round(num_vehicle_5_discharge_old));
      set(handles.text_discharge_old_5, 'String',discharge_old_5);
-    [rec_discharged_old_5]=drawRec(handles.axes1,453,219-num_vehicle_5_discharge*2,num_vehicle_5_discharge,'b','h');
+    [rec_discharged_old_5]=drawRec(handles.axes1,453,219-num_vehicle_5_discharge_old*2,num_vehicle_5_discharge_old,'b','h');
  
-     discharge_old_7 = sprintf('Old Discharge: %d', round(num_vehicle_7_discharge));
+     discharge_old_7 = sprintf('Old Discharge: %d', round(num_vehicle_7_discharge_old));
      set(handles.text_discharge_old_7, 'String',discharge_old_7);
-    [rec_discharged_old_7]=drawRec(handles.axes1,700,347,num_vehicle_7_discharge,'b','w');
+    [rec_discharged_old_7]=drawRec(handles.axes1,700,347,num_vehicle_7_discharge_old,'b','w');
      
      pause(3); %The pause set that we could see the diffrens between the rounds
      
-     t_avg_delay=t_avg_delay+average_delay;
-     t_arrival=t_arrival+total_num_vehicle;
-     t_dis=t_dis+total_num_discharge;
-     
+%      t_avg_delay=t_avg_delay+average_delay;
+%      t_arrival=t_arrival+total_num_vehicle;
+%      t_dis=t_dis+total_num_discharge;
+%      
      %Run in parllar all the programs on the current sitatuion on junction
      parfor j = 1 : 10
-          [all_delays(j),average_vehicle_delay,average_ped_delay,total_num_vehicle,total_num_discharge,total_delay_1_L_T_R,total_delay_3,total_delay_5,total_delay_7,num_vehicle_1_L_T_R_arrival,num_vehicle_3_arrival,num_vehicle_5_arrival,num_vehicle_7_arrival,num_vehicle_1_L_T_R_discharge,num_vehicle_3_discharge,num_vehicle_5_discharge,num_vehicle_7_discharge,arrival_vehicle_every_second_3,avg_cycle_1_L_T_R,avg_cycle_3,avg_cycle_5,avg_cycle_7] ...
+          [all_delays(j),average_vehicle_delay,average_ped_delay,total_num_vehicle,total_num_discharge,total_delay_1_L_T_R,total_delay_3,total_delay_5,total_delay_7,num_vehicle_1_L_T_R_arrival,num_vehicle_3_arrival,num_vehicle_5_arrival,num_vehicle_7_arrival,num_vehicle_1_L_T_R_discharge,num_vehicle_3_discharge,num_vehicle_5_discharge,num_vehicle_7_discharge,total_num_ped,total_num_ped_discharge,num_ped_1_L_T_R_arrival,num_ped_1_L_T_R_discharge,num_ped_3_arrival,num_ped_3_discharge,num_ped_5_arrival,num_ped_5_discharge,num_ped_7_arrival,num_ped_7_discharge] ...
            =average_total_intersection_delay_equal(time_simulation,allPrograms(j,:),lamda1L,lamda1T,lamda1R,lamda5,lamda3,lamda7);
      end
      
@@ -327,40 +364,109 @@ for i=1 : 2
      lastProgram=newProgram;
 
      
-%        tempStatics = {' ' ' ' roundString '' ' ' ' ';
-%                       'Lane ' '1' '3' '5' '7' 'All';...
-%                       'Total vehicle arrivel' num2str(num_vehicle_1_L_T_R_arrival) num2str(num_vehicle_3_arrival) num2str(num_vehicle_5_arrival) num2str(num_vehicle_7_arrival) total_num_vehicle;...
-%                       'Total vehicle discharge' num2str(num_vehicle_1_L_T_R_discharge) num2str(num_vehicle_3_discharge) num2str(num_vehicle_5_discharge) num2str(num_vehicle_7_discharge) total_num_discharge;...
-%                       'Avg ped delay' average_ped_delay average_ped_delay average_ped_delay average_ped_delay average_ped_delay;...
-%                       'Avg vehicle delay' num2str(total_delay_1_L_T_R) num2str(total_delay_3) num2str(total_delay_5) num2str(total_delay_7) num2str(average_vehicle_delay)};
-%        
-     
-    tempStatics = {' ' ' ' roundString '' ' ' ' ';
-                      'Lane ' '1' '3' '5' '7' 'All';...
-                      'Total vehicle arrivel' (num_vehicle_1_L_T_R_arrival) (num_vehicle_3_arrival) (num_vehicle_5_arrival) (num_vehicle_7_arrival) num_vehicle_1_L_T_R_arrival+num_vehicle_3_arrival+num_vehicle_5_arrival+num_vehicle_7_arrival;...
-                      'Total vehicle discharge' (num_vehicle_1_L_T_R_discharge) (num_vehicle_3_discharge) (num_vehicle_5_discharge) (num_vehicle_7_discharge) num_vehicle_1_L_T_R_discharge+num_vehicle_3_discharge+num_vehicle_5_discharge+num_vehicle_7_discharge;...
-                      'Avg ped delay' average_ped_delay average_ped_delay average_ped_delay average_ped_delay average_ped_delay;...
-                      'Avg vehicle delay' (total_delay_1_L_T_R) (total_delay_3) (total_delay_5) (total_delay_7) (average_vehicle_delay)};
-       
 
-       if i==1
+     tempStatics = {    sprintf('---')                  sprintf('---')                            roundString                        sprintf('---')                      sprintf('---')                       sprintf('---') ;               ...
+                      'Lane '                          sprintf('1')                              sprintf('3')                        sprintf('5')                        sprintf( '7')                        'All';                          ...
+                      'Total vehicle arrivel'          round(num_vehicle_1_L_T_R_arrival_new)    round(num_vehicle_3_arrival_new)    round(num_vehicle_5_arrival_new)    round(num_vehicle_7_arrival_new)     round(total_num_vehicle_new);       ...
+                      'Total vehicle discharge-New'    round(num_vehicle_1_L_T_R_discharge_new)  round(num_vehicle_3_discharge_new)  round(num_vehicle_5_discharge_new)  round(num_vehicle_7_discharge_new)   round(total_num_discharge_new); ...
+                      'Total vehicle discharge-Old'    round(num_vehicle_1_L_T_R_discharge_old)  round(num_vehicle_3_discharge_old)  round(num_vehicle_5_discharge_old)  round(num_vehicle_7_discharge_old)   round(total_num_discharge_old);     ...
+                      'Total pedestrian arrivel'       round(num_ped_1_L_T_R_arrival)            round(num_ped_3_arrival)            round(num_ped_5_arrival)            round(num_ped_7_arrival)             round(total_num_ped);           ...
+                      'Total pedestrian discharge'     round(num_ped_1_L_T_R_discharge)          round(num_ped_3_discharge)          round(num_ped_5_discharge)          round(num_ped_7_discharge)           round(total_num_ped_discharge); ...
+                      'Avg delay-New'                  (total_delay_1_L_T_R_new)                 (total_delay_3_new)                 (total_delay_5_new)                 (total_delay_7_new)                  (average_vehicle_delay_new);    ...
+                      'Avg delay-Old'                  (total_delay_1_L_T_R_old)                  (total_delay_3_old)                 (total_delay_5_old)                 (total_delay_7_old)                  (average_vehicle_delay_old)           }; 
+                     
+      if i==1
            finalStatics=tempStatics;
-       else
-           finalStatics=[finalStatics;tempStatics];
-       end
+      else
+          finalStatics=[finalStatics;tempStatics];
+      end
+      
+      total_vechiles_arrival_all=total_vechiles_arrival_all+round(total_num_vehicle_new);  
+      total_vechiles_arrival_1=total_vechiles_arrival_1+round(num_vehicle_1_L_T_R_arrival_new);  
+      total_vechiles_arrival_3=total_vechiles_arrival_3+round(num_vehicle_3_arrival_new); 
+      total_vechiles_arrival_5=total_vechiles_arrival_5+round(num_vehicle_5_arrival_new);
+      total_vechiles_arrival_7=total_vechiles_arrival_7+ round(num_vehicle_7_arrival_new);  
+      
+      total_new_avg_delay_all=total_new_avg_delay_all+average_delay_new; 
+      total_new_avg_delay_1=total_new_avg_delay_1+total_delay_1_L_T_R_new;
+      total_new_avg_delay_3=total_new_avg_delay_3+total_delay_3_new;
+      total_new_avg_delay_5=total_new_avg_delay_5+total_delay_5_new;
+      total_new_avg_delay_7=total_new_avg_delay_7+total_delay_7_new;
 
-   
+      
+      total_old_avg_delay_all=total_old_avg_delay_all+average_delay_old;
+      total_old_avg_delay_1=total_old_avg_delay_1+total_delay_1_L_T_R_old;
+      total_old_avg_delay_3=total_old_avg_delay_3+total_delay_3_old;
+      total_old_avg_delay_5=total_old_avg_delay_5+total_delay_5_old;
+      total_old_avg_delay_7=total_old_avg_delay_7+total_delay_7_old;
+
+      total_new_dis_all=total_new_dis_all+round(total_num_discharge_new);
+      total_new_dis_1=total_new_dis_1+round(num_vehicle_1_L_T_R_discharge_new); 
+      total_new_dis_3=total_new_dis_3+round(num_vehicle_3_discharge_new); 
+      total_new_dis_5=total_new_dis_5+round(num_vehicle_5_discharge_new);
+      total_new_dis_7=total_new_dis_7+round(num_vehicle_7_discharge_new);
+      
+      
+      total_old_dis_all=total_old_dis_all+round(total_num_discharge_old); 
+      total_old_dis_1=total_old_dis_1+round(num_vehicle_1_L_T_R_discharge_old); 
+      total_old_dis_3=total_old_dis_3+round(num_vehicle_3_discharge_old); 
+      total_old_dis_5=total_old_dis_5+round(num_vehicle_5_discharge_old);
+      total_old_dis_7=total_old_dis_7+round(num_vehicle_7_discharge_old);
+
+      
 end
 
-avg_delay=t_avg_delay/num_of_cycles_for_hour;
+
+total_new_avg_delay_all=total_new_avg_delay_all/num_of_cycles_for_hour;
+total_new_avg_delay_1=total_new_avg_delay_1/num_of_cycles_for_hour;
+total_new_avg_delay_3=total_new_avg_delay_3/num_of_cycles_for_hour;
+total_new_avg_delay_5=total_new_avg_delay_5/num_of_cycles_for_hour;
+total_new_avg_delay_7=total_new_avg_delay_7/num_of_cycles_for_hour;
+
+
+% total_new_dis_all=total_new_dis_all/num_of_cycles_for_hour;
+% total_new_dis_1=total_new_dis_1/num_of_cycles_for_hour;
+% total_new_dis_3=total_new_dis_3/num_of_cycles_for_hour;
+% total_new_dis_5=total_new_dis_5/num_of_cycles_for_hour;
+% total_new_dis_7=total_new_dis_7/num_of_cycles_for_hour;
+
+total_old_avg_delay_all=total_old_avg_delay_all/num_of_cycles_for_hour;
+total_old_avg_delay_1=total_old_avg_delay_1/num_of_cycles_for_hour;
+total_old_avg_delay_3=total_old_avg_delay_3/num_of_cycles_for_hour;
+total_old_avg_delay_5=total_old_avg_delay_5/num_of_cycles_for_hour;
+total_old_avg_delay_7=total_old_avg_delay_7/num_of_cycles_for_hour;
+
+% total_old_dis_all=total_old_dis_all/num_of_cycles_for_hour;
+% total_old_dis_1=total_old_dis_1/num_of_cycles_for_hour;
+% total_old_dis_3=total_old_dis_1/num_of_cycles_for_hour;
+% total_old_dis_5=total_old_dis_1/num_of_cycles_for_hour;
+% total_old_dis_7=total_old_dis_1/num_of_cycles_for_hour;
+
+
+
+
+tempStaticsFinal = {    sprintf('---')                   sprintf('---')                            'Summry'                            sprintf('---')                        sprintf('---')                       sprintf('---') ;                     ...
+                        'Lane '                          sprintf('1')                              sprintf('3')                        sprintf('5')                          sprintf( '7')                        'All';                               ...
+                        'Total vehicle arrivel'          round(total_vechiles_arrival_1)           round(total_vechiles_arrival_3)     round(total_vechiles_arrival_5)       round(total_vechiles_arrival_7)      round(total_vechiles_arrival_all);   ...
+                        'Total vehicle discharge-New'    round(total_new_dis_1)                    round(total_new_dis_3)              round(total_new_dis_5)                round(total_new_dis_7)               round(total_new_dis_all);            ...
+                        'Total vehicle discharge-Old'    round(total_old_dis_1)                    round(total_old_dis_3)              round(total_old_dis_5)                round(total_old_dis_7)               round(total_old_dis_all);            ...
+                        'Avg delay-New'                  (total_new_avg_delay_1)                   (total_new_avg_delay_3)             (total_new_avg_delay_5)               (total_new_avg_delay_7)              (total_new_avg_delay_all);           ...
+                        'Avg delay-Old'                  (total_old_avg_delay_1)                   (total_old_avg_delay_3)             (total_old_avg_delay_5)               (total_old_avg_delay_7)              (total_old_avg_delay_all)            }; 
+                     
+          finalStatics=[finalStatics;tempStaticsFinal];
+
+
 %            data(end+1,:)={' ' '1' '3' '5' '7' 'All'};
+
+
+
 
 handles.statics =finalStatics;
 guidata(hObject, handles);
 
 %Set the 'export statics' button visible and the simulation button enabled
 set(handles.export_statics_button,'visible','on')
-set(handles.button_start_static_sim,'enable','on');
+set(handles.button_start_sim,'enable','on');
 set(handles.button_start_dinamic_sim,'enable','on');
 
      
@@ -392,13 +498,6 @@ function varargout = gui_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 
-% --- Executes on button press in button_start_dinamic_sim.
-function button_start_dinamic_sim_Callback(hObject, eventdata, handles)
-% hObject    handle to button_start_dinamic_sim (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
 
 % --- Executes on button press in export_statics_button.
 function export_statics_button_Callback(hObject, eventdata, handles)
@@ -420,3 +519,24 @@ function export_statics_button_Callback(hObject, eventdata, handles)
 
         writetable(T,s,'Range','A1', 'WriteVariableNames',false)
      end
+
+
+% --- Executes on button press in check_box_static_sim.
+function check_box_static_sim_Callback(hObject, eventdata, handles)
+% hObject    handle to check_box_static_sim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.check_box_dynamic_sim,'value',0); 
+
+
+% Hint: get(hObject,'Value') returns toggle state of check_box_static_sim
+
+
+% --- Executes on button press in check_box_dynamic_sim.
+function check_box_dynamic_sim_Callback(hObject, eventdata, handles)
+% hObject    handle to check_box_dynamic_sim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.check_box_static_sim,'value',0); 
+
+% Hint: get(hObject,'Value') returns toggle state of check_box_dynamic_sim
