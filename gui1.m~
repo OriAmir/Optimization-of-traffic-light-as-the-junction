@@ -119,15 +119,13 @@ selected_plan = get(get(handles.button_group_select_plan,'SelectedObject'), 'Tag
 %Take value of choosen plan and initalize by the choise
 
 selected_time = get(get(handles.button_group_select_time,'SelectedObject'), 'Tag');
-total_second_sim_time=3600;
+
 if strcmp(selected_time, 'onehourbutton')
     num_of_cycles_for_hour=3600/210;
 elseif strcmp(selected_time, 'halfhourbutton')
     num_of_cycles_for_hour=1800/210;
-    total_second_sim_time=1800;
 else
      num_of_cycles_for_hour=900/210;
-     total_second_sim_time=900;
 end
 
 
@@ -217,17 +215,8 @@ lastProgram=newProgram; % Save the last program for check if there is change in 
 roundTime=0;
 for i=1 : round(num_of_cycles_for_hour)
     roundTime=roundTime+3.5;
-
- 
-            roundString = sprintf('Round %.0f , %.1f min ',i,roundTime);     
-%     else
-%         roundString = sprintf('Round %.0f , %d:00 min ',i,round(roundTime));
-
-   
-          
-    
-        %Set num of current round in the GUI text
-
+    %Set num of current round in the GUI text
+    roundString = sprintf('Round %.0f,%.0f:00 minutes ',i,roundTime);
     set(handles.text_round_num, 'String',roundString);
 
     fprintf('Program choose for round %.0f is: \n Lanes 3,7 - %.0f Seconds \n Lane   1  - %.0f Seconds \n Lane   5  - %.0f Seconds \n \n',i,newProgram(1),newProgram(2),newProgram(3));
@@ -243,7 +232,7 @@ for i=1 : round(num_of_cycles_for_hour)
 
 
    %Initalize num of vehicles in the junction every 3.5 minutes by the num_vehicle_arrival_every_round array 
-   [lamda1L,lamda1R,lamda1T,lamda3,lamda5,lamda7]=setLamdaValues(num_of_cycles_for_hour,total_second_sim_time,num_vehicle_arrival_every_round(i,:)); 
+   [lamda1L,lamda1R,lamda1T,lamda3,lamda5,lamda7]=setLamdaValues(num_of_cycles_for_hour,3600,num_vehicle_arrival_every_round(i,:)); 
 
 
    %Run the simulation with 'newProgram' - the program that give the min avg dealty in junction
