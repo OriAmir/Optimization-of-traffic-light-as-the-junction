@@ -8,6 +8,7 @@ flag_detect_ped_f=false;
 flag_detect_ped_g=false;
 
 
+%initalize the arrival_time_ped array in which second every pedestrian is arrival 
 
 j=1;
 for i = 1 : time_simulation
@@ -74,7 +75,7 @@ if(flag_detect_ped_g==false)
     arrival_time_ped_g=[];
 end
 
-
+%Calculate how total pedestrians arrival
 num_ped_d = length(arrival_time_ped_d); 
 num_ped_e = length(arrival_time_ped_e);
 num_ped_f = length(arrival_time_ped_f);
@@ -96,6 +97,10 @@ end
 if(num_ped_g==0)
     delay_ped_g=0;
 end
+
+
+%Calcualte the dealy of the pedestrians - take the time that pedestrians can pass the junction and
+%deduct the time that pedestrians is arrival to junction
 
 for i = 1 : num_ped_d
     

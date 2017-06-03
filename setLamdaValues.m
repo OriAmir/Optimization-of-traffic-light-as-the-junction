@@ -1,4 +1,4 @@
-%This function is initalize the num of vehicle for the time_simaltion by num cycles
+%This function  initalize the num of vehicle for every lane for the time_simaltion by num cycles
 
 function [ lamda1L,lamda1R,lamda1T,lamda3,lamda5,lamda7 ] = setLamdaValues( num_cycles,time_in_seconds,lamda_Values)
 

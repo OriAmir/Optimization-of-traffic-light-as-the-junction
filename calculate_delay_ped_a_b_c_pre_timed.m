@@ -1,14 +1,21 @@
+
+% The function calaculate Average delay of pedestrians in a,b,c-pre timed
+
+
 function [green_AC_vector,green_AB_vector,ped_red_AC,ped_red_AB,ped_green_AC,ped_green_AB,num_ped_green_a,num_ped_green_c,num_ped_green_b,num_ped_red_a,num_ped_red_c,num_ped_red_b,delay_ped_a,delay_ped_c,delay_ped_b,average_delay_ped_a,average_delay_ped_c,average_delay_ped_b] =...
     calculate_delay_ped_a_b_c_pre_timed(time_simulation,lamda_a,lamda_b,lamda_c,green_A_vector,green_B_vector,green_C_vector,AC_vector,BA_vector)
 
 
 for i = 1 : time_simulation
-    
+    %grren time for lane 1
 green_AC_vector(i) = green_A_vector(i) + green_C_vector(i) + AC_vector(i);
+
+%Green time for 
 green_AB_vector(i) = green_A_vector(i) + green_B_vector(i) + BA_vector(i);
 
 end
 
+%Calculate how many seconds red light is ON from phase A(3,7) to C ( 5 ) 
 ped_red_AC(1)=0;
 k=1;
 start_red = 0;
@@ -35,6 +42,7 @@ ped_green_AC = time_simulation-sum(ped_red_AC);
 num_ped_green_a = poissrnd(lamda_a*ped_green_AC);
 num_ped_green_c = poissrnd(lamda_c*ped_green_AC);
 
+%Calculate how many ped will come by possirnd and calcualte delay by this 
 
 for j = 1 : length(ped_red_AC)
     num_ped_red_a(j)= poissrnd(lamda_a*ped_red_AC(j));

@@ -1,3 +1,5 @@
+%This funciton initialize values for the simulation
+
 function [current_A,current_C,current_B,current_int_AC,current_int_CB,current_int_BA,green_A_vector,green_C_vector,green_B_vector,A_active,B_active,C_active,interstage_AC_active,interstage_CB_active,interstage_BA_active,discharge_veh_1L,discharge_veh_1T,discharge_veh_1R,discharge_veh_5,discharge_veh_3,discharge_veh_7,num_veh_1L_discharged,num_veh_1T_discharged,num_veh_1R_discharged,num_veh_5_discharged,num_veh_3_discharged,num_veh_7_discharged,AC_vector,CB_vector,BA_vector] =...
     first_secend_actions(time_simulation)
 
