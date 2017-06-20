@@ -1,7 +1,10 @@
-%This function gets the time simlation , vector of how many cars arrival
-%every second to junction in any way , vector of how many cars discharged
-%in every second in any way of junction , and return vectors of the time
-%that the cars is arrivval and delay 
+%This function get:
+%-the time simlation
+%-vector of how many cars arrival every second to junction in any way
+%-how many cars discharged in any way
+%The function return:
+%-vectors of the time that the cars is arrivval in any way
+%- delay in any way
 
 function [arrival_time_veh_1L,arrival_time_veh_1T,arrival_time_veh_1R,arrival_time_veh_5,arrival_time_veh_3,arrival_time_veh_7,delay_veh_1L,delay_veh_1T,delay_veh_1R,delay_veh_5,delay_veh_3,delay_veh_7,average_delay_veh_1L,average_delay_veh_1T,average_delay_veh_1R,average_delay_veh_5,average_delay_veh_3,average_delay_veh_7]=...
     calculate_delay_vehicle(time_simulation,arrival_vehicle_every_second_1L,arrival_vehicle_every_second_1T,arrival_vehicle_every_second_1R,arrival_vehicle_every_second_5,arrival_vehicle_every_second_3,arrival_vehicle_every_second_7,discharge_veh_1L,discharge_veh_1T,discharge_veh_1R,discharge_veh_5,discharge_veh_3,discharge_veh_7,num_veh_1L_discharged,num_veh_1T_discharged,num_veh_1R_discharged,num_veh_5_discharged,num_veh_3_discharged,num_veh_7_discharged )
@@ -373,7 +376,6 @@ end
 
 if(flag3==true)
     delay_veh_3=0;
-    cycle_delay_3=0;
 else
     for i = 1 : length(arrival_time_veh_3)
         if i<= num_veh_3_discharged

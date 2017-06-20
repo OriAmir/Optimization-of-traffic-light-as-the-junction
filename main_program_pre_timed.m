@@ -23,10 +23,6 @@ min_gap = 0;
 
 
 %The time of the red before forward to another pahse
-% int_AC = 5;
-% int_CB = 7;
-% int_BA = 6;?
-
 int_AC = 4;
 int_CB = 3;
 int_BA = 3;

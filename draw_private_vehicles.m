@@ -1,5 +1,4 @@
-%This function get the all data and initalize the vehicles arrival time in
-%every second 
+%This function get the all data and initalize the vehicles arrival time in every second 
 
 function [arrival_vehicle_every_second_1L,arrival_vehicle_until_second_1L,arrival_vehicle_every_second_1T,arrival_vehicle_until_second_1T,arrival_vehicle_every_second_1R,arrival_vehicle_until_second_1R,arrival_vehicle_every_second_5,arrival_vehicle_until_second_5,arrival_vehicle_every_second_3,arrival_vehicle_until_second_3,arrival_vehicle_every_second_7,arrival_vehicle_until_second_7] =...
     draw_private_vehicles(time_simulation,lamda1L,lamda1T,lamda1R,lamda5,lamda3,lamda7,min_gap)
@@ -35,6 +34,8 @@ detect_vehicle_1R_lane=repmat(detect_vehicle_every_second_1R,1);
 %     detect_vehicle_1R_lane(i) =  detect_vehicle_every_second_1R(i);
 % end
 
+
+%Lane ratio is to divide the vehicle in equal between multi paths
 critical_volume =  (lamda1T + lamda1R)/2;
 T_lane_R_lane_ratio = round(critical_volume/(lamda1T-critical_volume));
 lane_ratio = T_lane_R_lane_ratio/(T_lane_R_lane_ratio + 1);
@@ -69,7 +70,7 @@ arrival_vehicle_until_second_7(1)= arrival_vehicle_every_second_7(1);
 
 
 for i = 2 : time_simulation
-    arrival_vehicle_until_second_1L(i) = arrival_vehicle_every_second_1L(i)+ arrival_vehicle_until_second_1L(i-1); %???? ??????? ??????? ?????? ?? ????? ??????
+    arrival_vehicle_until_second_1L(i) = arrival_vehicle_every_second_1L(i)+ arrival_vehicle_until_second_1L(i-1);
     arrival_vehicle_until_second_1T(i) = arrival_vehicle_every_second_1T(i)+ arrival_vehicle_until_second_1T(i-1);
     arrival_vehicle_until_second_1R(i) = arrival_vehicle_every_second_1R(i)+ arrival_vehicle_until_second_1R(i-1);
     arrival_vehicle_until_second_5(i) = arrival_vehicle_every_second_5(i)+ arrival_vehicle_until_second_5(i-1);

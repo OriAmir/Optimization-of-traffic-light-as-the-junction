@@ -276,7 +276,7 @@ function button_start_sim_Callback(hObject, eventdata, handles)
             newProgram=allPrograms(minIndex,:);
         else %Dynamic simulation choose
             
-            %Summry all delay in junction and divide the phase time by every lane delay to the toal
+            %Summry all delay in junction and divide the phase time by every lane delay to the total
             %summry of alll delay in junction
             max_3_7_dealy=max([total_delay_3_new,total_delay_7_new]);
             totalDealy=sum([total_delay_1_L_T_R_new,max_3_7_dealy,total_delay_5_new]);
