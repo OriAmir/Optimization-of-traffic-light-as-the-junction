@@ -1,11 +1,11 @@
 # Optimization-of-traffic-light-as-the-junction
 
-<h3>Generl</h3>
+<h3>General</h3>
 
 <ul>
 
 <li>This is the repository of my final project B.Sc in Software engineer for year 2016-2017</li>
-<li>The project takes place in the Jerusale College of Engineering, in Ramat Bet HaKerem, Jerusalem, Israel.</li>
+<li>The project takes place in the jerusalem College of Engineering, in Ramat Bet HaKerem, Jerusalem, Israel.</li>
 <li>The project is scheduled between October 2016 untill July 2017</li>
 <li>This repository will include all the codes and informations about the progress of the project, from the zero stage to the presentation.</li>
 
@@ -44,7 +44,7 @@ an improvement in the time delay at the junction and in the number of vehicles t
 
 For run this project you must have:
 <ul>
-<li>Operating System Windows or macOS.</li>
+<li>Operating System - Windows or macOS.</li>
 <li>MATLAB software version 2016b or higher.</li>
 </ul>
 
@@ -89,7 +89,7 @@ Blue: How many vehicles cross the junction with traffic light program does not c
 </li>
 </ul>
 
-<I>If there is some change in traffic light a yellow square will blinking on the current traffic light program.
+<I>If there is some change in traffic light a yellow square will blinking on the current traffic light program.</I>
 
 
 
@@ -108,3 +108,9 @@ Blue: How many vehicles cross the junction with traffic light program does not c
 </ul>
 
 We could export all infromation from simulation running by click on 'export statics' button .
+
+<hr>
+<h3>Credits
+</h3>
+
+
