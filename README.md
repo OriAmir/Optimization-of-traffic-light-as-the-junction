@@ -58,6 +58,8 @@ Steps:
 </ol>
 
 
+<hr>
+
 <h3>Demo</h3>
 
 The main screen of this simulation is:
