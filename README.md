@@ -112,5 +112,4 @@ We could export all infromation from simulation running by click on 'export stat
 <hr>
 <h3>Credits
 </h3>
-
-
+Professor Tomer toledo and Doctor Tamir Balasha  from the Technion – Israel Institute of Technology
